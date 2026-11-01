@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closing the Loop · ICRA 2027 Workshop</title>
+<meta name="description" content="Closing the Loop: Reactive Execution for Behavior Foundation Models. Full-day workshop at ICRA 2027, May 24–28, COEX, Seoul.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   COLOR SCHEME
+   Material 3 static baseline scheme (m3.material.io/styles/color/static/baseline).
+   Every color on the page comes from these roles. To try other colors,
+   open the page with ?colors at the end of the URL (e.g. index.html?colors),
+   pick a seed color, press "Copy CSS" and paste the result over this block.
+   ===================================================================== */
+:root {
+  --primary: #6750A4;            --on-primary: #FFFFFF;
+  --primary-container: #EADDFF;  --on-primary-container: #21005D;
+  --secondary: #625B71;          --on-secondary: #FFFFFF;
+  --secondary-container: #E8DEF8;--on-secondary-container: #1D192B;
+  --tertiary: #7D5260;           --on-tertiary: #FFFFFF;
+  --tertiary-container: #FFD8E4; --on-tertiary-container: #31111D;
+  --error: #B3261E;              --on-error: #FFFFFF;
+  --surface: #FEF7FF;            --on-surface: #1D1B20;
+  --on-surface-variant: #49454F;
+  --surface-container-lowest: #FFFFFF;
+  --surface-container-low: #F7F2FA;
+  --surface-container: #F3EDF7;
+  --surface-container-high: #ECE6F0;
+  --surface-container-highest: #E6E0E9;
+  --outline: #79747E;            --outline-variant: #CAC4D0;
+  --inverse-surface: #322F35;    --inverse-on-surface: #F5EFF7;
+  --inverse-primary: #D0BCFF;
+}
+:root.dark-scheme {
+  --primary: #D0BCFF;            --on-primary: #381E72;
+  --primary-container: #4F378B;  --on-primary-container: #EADDFF;
+  --secondary: #CCC2DC;          --on-secondary: #332D41;
+  --secondary-container: #4A4458;--on-secondary-container: #E8DEF8;
+  --tertiary: #EFB8C8;           --on-tertiary: #492532;
+  --tertiary-container: #633B48; --on-tertiary-container: #FFD8E4;
+  --error: #F2B8B5;              --on-error: #601410;
+  --surface: #141218;            --on-surface: #E6E0E9;
+  --on-surface-variant: #CAC4D0;
+  --surface-container-lowest: #0F0D13;
+  --surface-container-low: #1D1B20;
+  --surface-container: #211F26;
+  --surface-container-high: #2B2930;
+  --surface-container-highest: #36343B;
+  --outline: #938F99;            --outline-variant: #49454F;
+  --inverse-surface: #E6E0E9;    --inverse-on-surface: #322F35;
+  --inverse-primary: #6750A4;
+}
+
+/* ===== Base ===== */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; color-scheme: light; }
+html.dark-scheme { color-scheme: dark; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: "Roboto Flex", Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 16px; line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-underline-offset: 3px; }
+img { max-width: 100%; display: block; }
+.mono { font-family: "Roboto Mono", ui-monospace, monospace; }
+/* ===== Spacing & layout (Material 3) =====
+   All spacing sits on the 4 px grid. Page margins follow the M3 window size classes:
+   compact (< 600 px) 16 px, medium and wider 24 px. */
+:root {
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px;
+  --sp-8: 32px; --sp-10: 40px; --sp-12: 48px; --sp-16: 64px; --sp-20: 80px;
+  --page-margin: 24px;          /* outer margin of the page */
+  --gap: 16px;                  /* space between cards */
+  --card-pad: 24px;             /* padding inside cards */
+  --section-pad: 80px;          /* space above/below each section */
+  --text-width: 68ch;           /* comfortable line length for paragraphs */
+  --para-align: left;           /* paragraph alignment: left, or justify for block text */
+}
+@media (max-width: 839px) { :root { --section-pad: 64px; } }
+@media (max-width: 599px) {
+  :root { --page-margin: 16px; --gap: 12px; --card-pad: 16px; --section-pad: 48px; }
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--page-margin); }
+
+/* M3 type scale (approximate) */
+.display { font-size: clamp(2.2rem, 5.2vw, 3.6rem); line-height: 1.08; font-weight: 500; letter-spacing: -0.02em; margin: 0; }
+.headline { font-size: clamp(1.7rem, 3.4vw, 2.3rem); line-height: 1.2; font-weight: 500; letter-spacing: -0.01em; margin: 0 0 var(--sp-3); }
+.title-l { font-size: 1.35rem; line-height: 1.3; font-weight: 500; margin: 0 0 var(--sp-2); }
+.title-m { font-size: 1.05rem; line-height: 1.4; font-weight: 600; margin: 0 0 var(--sp-1); letter-spacing: 0.01em; }
+.label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); margin: 0 0 var(--sp-2); }
+.body-l { font-size: 1.1rem; color: var(--on-surface-variant); max-width: var(--text-width); margin: 0 auto var(--sp-4); text-align: var(--para-align); }
+.body-l:last-child { margin-bottom: 0; }
+.muted { color: var(--on-surface-variant); }
+
+/* Placeholder marker for unconfirmed content */
+.tba {
+  display: inline-block; padding: 0 var(--sp-2); border-radius: 8px;
+  background: var(--tertiary-container); color: var(--on-tertiary-container);
+  font-size: 0.78em; font-weight: 600; letter-spacing: 0.02em; line-height: 1.6;
+  vertical-align: 0.1em;
+}
+
+/* ===== Top app bar ===== */
+.appbar {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--surface-container);
+  border-bottom: 1px solid var(--outline-variant);
+}
+.appbar .wrap { display: flex; align-items: center; gap: var(--sp-4); height: 64px; }
+.brand { font-weight: 600; color: var(--on-surface); text-decoration: none; white-space: nowrap; }
+.brand span { color: var(--primary); }
+.nav { display: flex; gap: var(--sp-1); margin-left: auto; }
+.nav a {
+  color: var(--on-surface-variant); text-decoration: none; font-weight: 500; font-size: 0.92rem; white-space: nowrap;
+  padding: var(--sp-2) var(--sp-4); border-radius: 999px;
+}
+.nav a:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); color: var(--on-surface); }
+.nav a.active { background: var(--secondary-container); color: var(--on-secondary-container); }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 50%; border: 0; background: transparent;
+  color: var(--on-surface-variant); cursor: pointer; display: grid; place-items: center; flex: none;
+}
+.icon-btn:hover { background: color-mix(in srgb, var(--on-surface) 8%, transparent); }
+.icon-btn svg { width: 24px; height: 24px; }
+.menu-btn { display: none; }
+@media (max-width: 1000px) {
+  .menu-btn { display: grid; margin-left: auto; }
+  .nav {
+    display: none; position: absolute; top: 64px; left: 0; right: 0;
+    flex-direction: column; padding: var(--sp-2) var(--page-margin) var(--sp-4); gap: var(--sp-1);
+    background: var(--surface-container); border-bottom: 1px solid var(--outline-variant);
+  }
+  .nav.open { display: flex; }
+  .nav a { padding: var(--sp-3) var(--sp-4); }
+}
+
+/* ===== Buttons & chips ===== */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  height: 40px; padding: 0 var(--sp-6); border-radius: 999px;
+  font: inherit; font-weight: 500; font-size: 0.95rem; text-decoration: none; cursor: pointer;
+  border: 1px solid transparent; transition: box-shadow .2s, background .2s;
+}
+.btn.filled { background: var(--primary); color: var(--on-primary); }
+.btn.filled:hover { box-shadow: 0 1px 3px rgba(0,0,0,.25); background: color-mix(in srgb, var(--on-primary) 8%, var(--primary)); }
+.btn.tonal { background: var(--secondary-container); color: var(--on-secondary-container); }
+.btn.tonal:hover { background: color-mix(in srgb, var(--on-secondary-container) 8%, var(--secondary-container)); }
+.btn.outlined { border-color: var(--outline); color: var(--primary); background: transparent; }
+.btn.outlined:hover { background: color-mix(in srgb, var(--primary) 8%, transparent); }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2); padding: 0; margin: 0; list-style: none; }
+.chip {
+  display: inline-flex; align-items: center; height: 32px; padding: 0 var(--sp-4);
+  border: 1px solid var(--outline-variant); border-radius: 8px;
+  font-size: 0.9rem; font-weight: 500; color: var(--on-surface-variant); background: var(--surface-container-low);
+}
+
+/* ===== Hero ===== */
+.hero { padding: var(--sp-12) 0 var(--sp-8); }
+.hero-card {
+  background: var(--primary-container); color: var(--on-primary-container);
+  border-radius: 28px; padding: clamp(var(--sp-6), 5vw, var(--sp-16)); text-align: center;
+}
+.hero .eyebrow { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2); margin-bottom: var(--sp-6); }
+.pill {
+  display: inline-flex; align-items: center; gap: var(--sp-2); height: 32px; padding: 0 var(--sp-3); border-radius: 8px;
+  background: color-mix(in srgb, var(--on-primary-container) 10%, transparent);
+  font-size: 0.85rem; font-weight: 500;
+}
+.hero .subtitle { font-size: clamp(1.1rem, 2.2vw, 1.4rem); line-height: 1.4; margin: var(--sp-4) auto 0; max-width: 46ch; opacity: .9; }
+.hero .alt-title { font-size: 0.9rem; margin: var(--sp-3) auto 0; opacity: .75; }
+.hero .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-3); margin-top: var(--sp-8); }
+
+
+/* ===== Sections ===== */
+section.block { padding: var(--section-pad) 0; }
+section.block + section.block { border-top: 1px solid var(--outline-variant); }
+.section-head { margin-bottom: var(--sp-10); text-align: center; }
+.section-head:last-child, .section-head > :last-child { margin-bottom: 0; }
+/* A subsection inside a section: centered heading + optional lead paragraph */
+.sub { margin-top: var(--sp-12); }
+.sub-head { text-align: center; margin-bottom: var(--sp-6); }
+.sub-head p { max-width: var(--text-width); margin: 0 auto; text-align: var(--para-align); }
+
+.grid { display: grid; gap: var(--gap); }
+.grid.two { grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); }
+/* Centered rows: incomplete last rows sit in the middle instead of on the left */
+.row-center { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap); }
+.row-center > * { flex: 0 1 var(--col, 240px); min-width: 0; }
+.people { --col: 164px; }
+@media (max-width: 599px) { .people { --col: calc(50% - var(--gap) / 2); } }
+
+.card {
+  background: var(--surface-container-low); border-radius: 16px; padding: var(--card-pad);
+  border: 1px solid var(--outline-variant);
+}
+.card.filled { background: var(--surface-container-highest); border-color: transparent; }
+.card.elevated { background: var(--surface-container-low); border-color: transparent; box-shadow: 0 1px 2px rgba(0,0,0,.18), 0 1px 3px 1px rgba(0,0,0,.08); }
+.card p { margin: 0 0 var(--sp-3); }
+.card p:last-child { margin-bottom: 0; }
+
+.body-l.ask { text-align: center; font-style: italic; font-size: 1.25rem; line-height: 1.5; color: var(--on-surface); max-width: 52ch; margin-top: var(--sp-6); margin-bottom: var(--sp-6); }
+
+/* Challenges */
+.challenge { display: flex; flex-direction: column; gap: var(--sp-3); }
+.challenge .tag { align-self: flex-start; }
+.challenge p { margin: 0; }
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: var(--sp-2) var(--sp-4); margin: var(--sp-1) 0 0; font-size: 0.92rem; }
+.facts dt { color: var(--on-surface-variant); }
+.facts dd { margin: 0; }
+
+/* Flip tiles (challenges) */
+.flip { perspective: 1400px; cursor: pointer; border-radius: 16px; outline: none; }
+.flip:focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
+.flip-inner {
+  display: grid; height: 100%; min-height: 380px;
+  transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2, 0, 0, 1);
+}
+.flip.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-face {
+  grid-area: 1 / 1; border-radius: 16px; overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.flip-back { transform: rotateY(180deg); }
+.flip-front { position: relative; display: flex; align-items: flex-end; background: var(--surface-container-highest); }
+.flip-front img, .flip-front video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.flip-front img { object-position: 62% 50%; }
+.flip-front.no-image { background: var(--secondary-container); }
+.flip-caption {
+  position: relative; width: 100%; padding: var(--sp-12) var(--card-pad) var(--card-pad);
+  display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-2);
+  color: #fff; background: linear-gradient(to top, rgba(0,0,0,.78), rgba(0,0,0,.45) 60%, transparent);
+}
+.flip-caption .title-l { margin: 0; }
+.flip-caption .chip { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.35); color: #fff; }
+.no-image .flip-caption { color: var(--on-secondary-container); background: none; }
+.no-image .flip-caption .chip { background: transparent; border-color: var(--outline); color: var(--on-secondary-container); }
+.flip-hint { display: inline-flex; align-items: center; gap: var(--sp-1); font-size: 0.82rem; font-weight: 500; opacity: .85; }
+.flip-hint svg { width: 18px; height: 18px; }
+.flip-back .flip-hint { margin-top: auto; color: var(--on-surface-variant); }
+.flip:hover .flip-hint { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .flip-inner { transition: none; } }
+
+/* Program */
+.schedule { width: 100%; max-width: 820px; margin: 0 auto; border-collapse: separate; border-spacing: 0; background: var(--surface-container-low); border-radius: 16px; overflow: hidden; border: 1px solid var(--outline-variant); }
+.schedule td { padding: var(--sp-4) var(--sp-6); border-top: 1px solid var(--outline-variant); vertical-align: top; }
+.schedule tr:first-child td { border-top: 0; }
+.schedule td.time { width: 9.5em; font-family: "Roboto Mono", monospace; font-size: 0.88rem; color: var(--on-surface-variant); white-space: nowrap; }
+.schedule tr.break td { background: var(--surface-container); color: var(--on-surface-variant); }
+.schedule .what { font-weight: 500; }
+.schedule .detail { display: block; font-size: 0.9rem; color: var(--on-surface-variant); font-weight: 400; }
+.schedule tr.inter .what::after {
+  content: "interactive"; margin-left: var(--sp-3); padding: 0 var(--sp-2); border-radius: 8px;
+  background: var(--primary-container); color: var(--on-primary-container);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: .04em; vertical-align: 0.15em;
+}
+@media (max-width: 599px) {
+  .schedule td { display: block; padding: var(--sp-1) var(--sp-4); border-top: 0; }
+  .schedule td.time { padding-top: var(--sp-4); border-top: 1px solid var(--outline-variant); width: auto; }
+  .schedule tr:first-child td.time { border-top: 0; }
+  .schedule td:last-child { padding-bottom: var(--sp-4); }
+}
+.note { font-size: 0.88rem; color: var(--on-surface-variant); margin: var(--sp-4) 0 0; text-align: center; }
+
+
+/* People */
+.person { text-align: center; padding: var(--sp-6) var(--sp-4); }
+.avatar {
+  width: 112px; height: 112px; margin: 0 auto var(--sp-4); border-radius: 50%; overflow: hidden;
+  background: var(--secondary-container); color: var(--on-secondary-container);
+  display: grid; place-items: center; font-size: 1.8rem; font-weight: 500;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.person .name { font-weight: 600; margin: 0; }
+.person .aff { font-size: 0.9rem; color: var(--on-surface-variant); margin: var(--sp-1) 0 0; }
+.person .topic { font-size: 0.88rem; margin: var(--sp-3) 0 0; }
+@media (max-width: 599px) { .avatar { width: 96px; height: 96px; } }
+
+/* CFP */
+.cfp { display: flex; flex-direction: column; gap: var(--gap); }
+.deadline {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4);
+  background: var(--primary); color: var(--on-primary); border-radius: 16px; padding: var(--sp-5) var(--card-pad);
+}
+.deadline p { margin: 0; }
+.deadline-k { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: .85; }
+.deadline-v { font-size: 1.25rem; font-weight: 600; margin-top: var(--sp-1) !important; }
+.deadline .btn { background: var(--surface-container-lowest); color: var(--primary); }
+.deadline .btn:hover { background: var(--primary-container); }
+.btn.is-disabled { cursor: default; opacity: .85; }
+.deadline .tba { margin-left: var(--sp-1); }
+
+.guidelines .title-m { margin-bottom: var(--sp-4); }
+.guide-cols { display: grid; grid-template-columns: repeat(4, 1fr); }
+.guide { padding: 0 var(--sp-5); border-left: 1px solid var(--outline-variant); }
+.guide:first-child { padding-left: 0; border-left: 0; }
+.guide p { margin: 0; }
+.guide-k { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary); }
+.guide-v { font-weight: 600; margin-top: var(--sp-1) !important; }
+.guide-d { font-size: 0.88rem; line-height: 1.5; color: var(--on-surface-variant); margin-top: var(--sp-2) !important; }
+@media (max-width: 839px) {
+  .guide-cols { grid-template-columns: 1fr 1fr; row-gap: var(--sp-5); }
+  .guide:nth-child(3) { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 599px) {
+  .guide-cols { grid-template-columns: 1fr; row-gap: 0; }
+  .guide, .guide:nth-child(3) { padding: var(--sp-4) 0; border-left: 0; border-top: 1px solid var(--outline-variant); }
+  .guide:first-child { padding-top: 0; border-top: 0; }
+  .guide:last-child { padding-bottom: 0; }
+}
+
+.pillars { list-style: none; counter-reset: pillar; margin: 0; padding: 0; }
+.pillars li { counter-increment: pillar; display: flex; align-items: baseline; gap: var(--sp-3); padding: var(--sp-2) 0; border-top: 1px solid var(--outline-variant); font-weight: 500; }
+.pillars li:first-child { border-top: 0; padding-top: 0; }
+.pillars li::before { content: counter(pillar, decimal-leading-zero); font-family: "Roboto Mono", monospace; font-size: 0.85rem; color: var(--primary); }
+
+@media (max-width: 599px) {
+  .hero-card { padding: var(--sp-6) var(--sp-4); }
+}
+
+/* Footer */
+footer { background: var(--surface-container); color: var(--on-surface-variant); padding: var(--sp-10) 0; font-size: 0.92rem; text-align: center; }
+footer .wrap { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); }
+
+/* ===== Color picker panel (only shown with ?colors in the URL) ===== */
+.picker {
+  position: fixed; right: 16px; bottom: 16px; z-index: 100; width: min(340px, calc(100vw - 32px));
+  background: var(--surface-container-high); color: var(--on-surface);
+  border-radius: 20px; padding: 20px; box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  font-size: 0.9rem;
+}
+.picker[hidden] { display: none; }
+.picker h3 { margin: 0 0 12px; font-size: 1rem; font-weight: 600; }
+.picker .row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.picker input[type=color] { width: 44px; height: 36px; border: 0; padding: 0; background: none; cursor: pointer; }
+.picker .swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+.picker .sw { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--outline-variant); cursor: pointer; padding: 0; }
+.picker select { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--outline); background: var(--surface); color: var(--on-surface); }
+.picker .btn { height: 36px; padding: 0 16px; font-size: 0.85rem; }
+.picker .status { font-size: 0.8rem; color: var(--on-surface-variant); min-height: 1.2em; margin: 0; }
+</style>
+<script>
+  // Apply the saved or system light/dark preference before the page paints.
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("theme"); } catch (e) {}
+    if (t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      document.documentElement.classList.add("dark-scheme");
+    }
+  })();
+</script>
+</head>
+<body>
+
+<!-- ===================== Top app bar ===================== -->
+<header class="appbar">
+  <div class="wrap">
+    <a class="brand" href="#top">Closing the Loop <span>· ICRA 2027</span></a>
+    <nav class="nav" id="nav" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#speakers">Speakers</a>
+      <a href="#program">Program</a>
+      <a href="#cfp">Call for Papers</a>
+      <a href="#challenges">Challenges</a>
+      <a href="#organizers">Organizers</a>
+    </nav>
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </button>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36A5.5 5.5 0 0 1 13.36 3.1 9.2 9.2 0 0 0 12 3z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== Hero ===================== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-card">
+      <div class="eyebrow">
+        <span class="pill">ICRA 2027 · Full-day workshop · in person</span>
+        <span class="pill">Seoul, South Korea · COEX</span>
+        <span class="pill">May 24–28, 2027 · day <span class="tba">TBA</span></span>
+      </div>
+      <h1 class="display">Closing the Loop</h1>
+      <p class="subtitle">Reactive Execution for Behavior Foundation Models</p>
+      <p class="alt-title">Also proposed as <em>Learning to React: Robot Learning in Dynamic Environments</em> · final title <span class="tba">TBA</span></p>
+      <div class="actions">
+        <a class="btn filled" href="#cfp">Call for Papers</a>
+        <a class="btn tonal" href="#challenges">Challenges</a>
+        <a class="btn outlined" href="#program">Program</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== About ===================== -->
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="headline">Why reactive execution?</h2>
+      <p class="body-l">
+        Pre-trained robot foundation models have expanded the range of manipulation tasks robots can perform.
+        Most of these models are used in settings where the environment changes little between observation and
+        action. However, real-world tasks often require robots to respond quickly, while the scene is dynamic.
+        Industrial robots need to maintain high throughput, robots working alongside people need to respond
+        quickly and safely to unexpected changes, and tasks such as striking, catching, and fast contact-rich
+        manipulation require precise timing.
+      </p>
+      <p class="body-l">
+        To meet these demands, robots must track changes in their surroundings and adjust their actions in time.
+        Yet learned policies (such as vision-language-action, World-Action models) often update their actions
+        much more slowly than sensors provide new information or low-level controllers operate. This delay can
+        leave robots acting on information that is already outdated. This workshop asks:
+      </p>
+      <p class="body-l ask">
+        What must change across perception, learning, inference, and execution for robots to
+        work faster and respond reliably to changes in their environment?
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== Speakers ===================== -->
+<section class="block" id="speakers">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="headline">Invited speakers</h2>
+    </div>
+    <!-- To add a speaker, copy one card and change the photo, name and affiliation.
+         Photos are 400×400 px squares centered on the face, stored in images/. -->
+    <div class="row-center people">
+      <div class="card person"><div class="avatar"><img src="images/markus_wulfmeier.jpg" alt="Markus Wulfmeier" width="400" height="400" loading="lazy"></div><p class="name">Markus Wulfmeier</p><p class="aff">Nomagic</p></div>
+      <div class="card person"><div class="avatar"><img src="images/hengshuang_zhao.jpg" alt="Hengshuang Zhao" width="400" height="400" loading="lazy"></div><p class="name">Hengshuang Zhao</p><p class="aff">The University of Hong Kong</p></div>
+      <div class="card person"><div class="avatar"><img src="images/renaud_detry.jpg" alt="Renaud Detry" width="400" height="400" loading="lazy"></div><p class="name">Renaud Detry</p><p class="aff">KU Leuven</p></div>
+      <div class="card person"><div class="avatar"><img src="images/jenai_yang.jpg" alt="Jenai Xuning Yang" width="400" height="400" loading="lazy"></div><p class="name">Jenai Xuning Yang</p><p class="aff">NVIDIA</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== Program ===================== -->
+<section class="block" id="program">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="headline">Tentative schedule</h2>
+    </div>
+    <!-- Add class="inter" to a row to show the "interactive" badge. -->
+    <table class="schedule">
+      <tbody>
+        <tr class="inter"><td class="time">08:30–09:00</td><td><span class="what">Opening &amp; live poll</span></td></tr>
+        <tr><td class="time">09:00–10:00</td><td><span class="what">Invited talks 1–2</span></td></tr>
+        <tr class="inter"><td class="time">10:00–11:00</td><td><span class="what">Coffee &amp; poster session I</span></td></tr>
+        <tr class="inter"><td class="time">11:00–12:30</td><td><span class="what">Challenges &amp; top-team sessions</span><span class="detail">Setup and results of both challenges; the top 3–5 teams discuss their design decisions</span></td></tr>
+        <tr class="break"><td class="time">12:30–14:00</td><td><span class="what">Lunch</span></td></tr>
+        <tr><td class="time">14:00–15:00</td><td><span class="what">Invited talks 3–4</span></td></tr>
+        <tr class="inter"><td class="time">15:00–15:30</td><td><span class="what">Spotlights &amp; failure videos</span></td></tr>
+        <tr class="inter"><td class="time">15:30–16:15</td><td><span class="what">Coffee &amp; poster session II</span></td></tr>
+        <tr class="inter"><td class="time">16:15–17:00</td><td><span class="what">Breakout groups</span><span class="detail">Benchmarks &amp; metrics</span></td></tr>
+        <tr class="inter"><td class="time">17:00–17:50</td><td><span class="what">Panel discussion</span><span class="detail">Seeded by the breakout reports and live polls</span></td></tr>
+        <tr><td class="time">17:50–18:00</td><td><span class="what">Closing &amp; awards</span></td></tr>
+      </tbody>
+    </table>
+    <p class="note">All times are local time in Seoul (KST, UTC+9).</p>
+  </div>
+</section>
+
+<!-- ===================== Call for Papers ===================== -->
+<section class="block" id="cfp">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="headline">Call for contributions</h2>
+      <p class="body-l">We invite non-archival extended abstracts on reactive robot learning and execution, including
+      datasets, negative results, and position papers. Accepted contributions are presented as posters, and a
+      selection as spotlight talks.</p>
+    </div>
+
+    <div class="cfp">
+      <!-- Deadline banner: when the OpenReview page exists, replace the <span> button with
+           <a class="btn" href="https://openreview.net/...">Submit on OpenReview</a> -->
+      <div class="deadline">
+        <div>
+          <p class="deadline-k">Submission deadline</p>
+          <p class="deadline-v"><span class="tba">TBA</span></p>
+        </div>
+        <span class="btn is-disabled" aria-disabled="true">Submit on OpenReview <span class="tba">link TBA</span></span>
+      </div>
+
+      <div class="card guidelines">
+        <h3 class="title-m">Submission guidelines</h3>
+        <div class="guide-cols">
+          <div class="guide">
+            <p class="guide-k">Length</p>
+            <p class="guide-v">Up to 4 pages</p>
+            <p class="guide-d">Extended abstracts.</p>
+          </div>
+          <div class="guide">
+            <p class="guide-k">Review</p>
+            <p class="guide-v">Double-blind <span class="tba">confirm</span></p>
+            <p class="guide-d">By the organizers and a program committee.</p>
+          </div>
+          <div class="guide">
+            <p class="guide-k">Publication</p>
+            <p class="guide-v">Non-archival</p>
+            <p class="guide-d">Accepted abstracts are posted on the workshop website.</p>
+          </div>
+          <div class="guide">
+            <p class="guide-k">Presentation</p>
+            <p class="guide-v">Posters &amp; spotlights</p>
+            <p class="guide-d">Up to 30 posters, 8 of them selected as spotlight talks for early-career researchers. <span class="tba">confirm</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3 class="title-m">Topics</h3>
+          <ol class="pillars">
+            <li>Perception &amp; state estimation</li>
+            <li>Inference &amp; execution</li>
+            <li>Model &amp; system design</li>
+            <li>Learning methods</li>
+            <li>Tasks, benchmarks &amp; metrics</li>
+          </ol>
+        </div>
+        <div class="card">
+          <h3 class="title-m">Failure videos</h3>
+          <p class="muted">We encourage informative failure videos. Please include the system information:
+          sensing rate, inference latency, replanning frequency, and controller rate. Selected videos are discussed
+          in the spotlight and failure-video session.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== Challenges ===================== -->
+<section class="block" id="challenges">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="headline">Two complementary challenges</h2>
+      <p class="body-l">Fast perception and reaction in a competitive task, and adaptation to changing conditions in
+      everyday manipulation with moving objects. At the workshop, each challenge presents its setup and results,
+      followed by a session with the top 3–5 teams on their design decisions, what worked, and what did not.</p>
+    </div>
+    <!-- Flip tiles: click (or press Enter) to turn a tile over. The front shows a picture,
+         the back the description. To give a tile a picture, add <img> inside its .flip-front. -->
+    <div class="grid two">
+      <div class="flip" tabindex="0" role="button" aria-pressed="false" aria-label="Robot Air Hockey Challenge 2027, show details">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <img src="images/air_hockey.jpg" alt="Two KUKA robot arms playing air hockey" width="1600" height="900">
+            <div class="flip-caption">
+              <span class="chip tag">Competitive · vision-based</span>
+              <h3 class="title-l">Robot Air Hockey Challenge 2027</h3>
+              <span class="flip-hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.95 7.95 0 0 0 20 13c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 8.74A7.95 7.95 0 0 0 4 13c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6z"/></svg>Click for details</span>
+            </div>
+          </div>
+          <article class="flip-face flip-back card elevated challenge">
+            <h3 class="title-l">Robot Air Hockey Challenge 2027</h3>
+            <p>The deployed policy receives <strong>50&nbsp;Hz RGB-D observations</strong> and robot proprioception
+            instead of privileged motion-capture state. Teams must extract and predict task-relevant state from vision
+            and react in time.</p>
+            <p class="muted">Released to teams: synchronized human–human play and human-to-robot teleoperation data,
+            robot actions and rewards, motion-capture ground truth for puck and pusher, and a physics simulator.
+            Any approach is welcome: imitation and reinforcement learning, planning, world models, explicit perception
+            pipelines, end-to-end visuomotor learning, or hybrids.</p>
+            <dl class="facts">
+              <dt>Organized by</dt><dd>IAS at TU Darmstadt, DFKI SAIROL, and Huawei Technologies R&amp;D (UK)</dd>
+              <dt>Timeline</dt><dd><span class="tba">TBA</span></dd>
+            </dl>
+            <span class="flip-hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.95 7.95 0 0 0 20 13c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 8.74A7.95 7.95 0 0 0 4 13c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6z"/></svg>Click to flip back</span>
+          </article>
+        </div>
+      </div>
+
+      <div class="flip" tabindex="0" role="button" aria-pressed="false" aria-label="Dynamic Object Manipulation Challenge, show details">
+        <div class="flip-inner">
+          <div class="flip-face flip-front">
+            <video src="images/dom_task.mp4" poster="images/dom_task_poster.jpg" width="480" height="360"
+                   autoplay muted loop playsinline aria-label="Simulated robot arm placing a moving lemon into a bowl"></video>
+            <div class="flip-caption">
+              <span class="chip tag">Everyday manipulation · moving objects</span>
+              <h3 class="title-l">Dynamic Object Manipulation Challenge</h3>
+              <span class="flip-hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.95 7.95 0 0 0 20 13c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 8.74A7.95 7.95 0 0 0 4 13c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6z"/></svg>Click for details</span>
+            </div>
+          </div>
+          <article class="flip-face flip-back card elevated challenge">
+            <h3 class="title-l">Dynamic Object Manipulation Challenge</h3>
+            <p>Based on a selected subset of the
+            <a href="https://arxiv.org/abs/2601.22153">DOM benchmark</a>. Robots grasp and place objects in a scene
+            with <strong>three moving objects</strong>. By varying object motion, friction and other physical properties,
+            the challenge tests whether robots adapt their actions as conditions change.</p>
+            <p class="muted">Learned policies, perception and control pipelines, and combinations of the two are all welcome.</p>
+            <dl class="facts">
+              <dt>Task subset</dt><dd><span class="tba">TBA</span></dd>
+              <dt>Timeline</dt><dd><span class="tba">TBA</span></dd>
+              <dt>Evaluation</dt><dd><span class="tba">TBA</span></dd>
+            </dl>
+            <span class="flip-hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.95 7.95 0 0 0 20 13c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 8.74A7.95 7.95 0 0 0 4 13c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6z"/></svg>Click to flip back</span>
+          </article>
+        </div>
+      </div>
+    </div>
+    <p class="note">Participating in a challenge is not required to attend the workshop.</p>
+  </div>
+</section>
+
+<!-- ===================== Organizers ===================== -->
+<section class="block" id="organizers">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="headline">Organizers</h2>
+    </div>
+    <div class="row-center people">
+      <div class="card person"><div class="avatar"><img src="images/pankhuri_vanjani.jpg" alt="Pankhuri Vanjani" width="400" height="400" loading="lazy"></div><p class="name">Pankhuri Vanjani</p><p class="aff">Karlsruhe Institute of Technology</p></div>
+      <div class="card person"><div class="avatar"><img src="images/atalay_donat.jpg" alt="Atalay Donat" width="400" height="400" loading="lazy"></div><p class="name">Atalay Donat</p><p class="aff">TU Darmstadt</p></div>
+      <div class="card person"><div class="avatar"><img src="images/jannick_stranghoener.jpg" alt="Jannick Stranghöner" width="400" height="400" loading="lazy"></div><p class="name">Jannick Stranghöner</p><p class="aff">Bielefeld University</p></div>
+      <div class="card person"><div class="avatar"><img src="images/theo_gruner.jpg" alt="Theo Gruner" width="400" height="400" loading="lazy"></div><p class="name">Theo Gruner</p><p class="aff">TU Darmstadt</p></div>
+      <div class="card person"><div class="avatar"><img src="images/joao_carvalho.jpg" alt="João Carvalho" width="400" height="400" loading="lazy"></div><p class="name">João Carvalho</p><p class="aff">DFKI &amp; TU Darmstadt</p></div>
+      <div class="card person"><div class="avatar"><img src="images/christopher_mower.jpg" alt="Christopher E. Mower" width="400" height="400" loading="lazy"></div><p class="name">Christopher E. Mower</p><p class="aff">Huawei R&amp;D UK</p></div>
+    </div>
+
+    <div class="sub-head sub">
+    <h3 class="title-l">Advisors</h3>
+    </div>
+    <div class="row-center people">
+      <div class="card person"><div class="avatar"><img src="images/rudi_lioutikov.jpg" alt="Rudolf Lioutikov" width="400" height="400" loading="lazy"></div><p class="name">Rudolf Lioutikov</p><p class="aff">Karlsruhe Institute of Technology</p></div>
+      <div class="card person"><div class="avatar"><img src="images/jan_peters.jpg" alt="Jan Peters" width="400" height="400" loading="lazy"></div><p class="name">Jan Peters</p><p class="aff">TU Darmstadt &amp; DFKI</p></div>
+      <div class="card person"><div class="avatar"><img src="images/puze_liu.jpg" alt="Puze Liu" width="400" height="400" loading="lazy"></div><p class="name">Puze Liu</p><p class="aff">Tongji University (SRIAS)</p></div>
+      <div class="card person"><div class="avatar"><img src="images/haitham_bou_ammar.jpg" alt="Haitham Bou-Ammar" width="400" height="400" loading="lazy"></div><p class="name">Haitham Bou-Ammar</p><p class="aff">Huawei R&amp;D UK &amp; University College London</p></div>
+      <div class="card person"><div class="avatar"><img src="images/klaus_neumann.jpg" alt="Klaus Neumann" width="400" height="400" loading="lazy"></div><p class="name">Klaus Neumann</p><p class="aff">Bielefeld University &amp; Fraunhofer IOSB-INA</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Closing the Loop · Workshop at ICRA 2027, Seoul<br>Talks will be recorded and posted here with the accepted abstracts.</span>
+    <span>Contact: <span class="tba">email TBA</span></span>
+  </div>
+</footer>
+
+<!-- Color picker (visible only when the URL ends in ?colors) -->
+<aside class="picker" id="picker" hidden aria-label="Color scheme picker">
+  <h3>Try a color scheme</h3>
+  <div class="row">
+    <input type="color" id="seed" value="#6750A4" aria-label="Seed color">
+    <div class="swatches" id="swatches"></div>
+  </div>
+  <div class="row">
+    <label for="variant">Style</label>
+    <select id="variant">
+      <option value="TonalSpot">Tonal spot (M3 default)</option>
+      <option value="Vibrant">Vibrant</option>
+      <option value="Expressive">Expressive</option>
+      <option value="Neutral">Neutral</option>
+      <option value="Fidelity">Fidelity</option>
+    </select>
+  </div>
+  <div class="row">
+    <button class="btn tonal" id="resetBtn">Baseline</button>
+    <button class="btn filled" id="copyBtn">Copy CSS</button>
+  </div>
+  <p class="status" id="pickerStatus"></p>
+</aside>
+
+<script>
+/* ===== Navigation: mobile menu + active section highlight ===== */
+(function () {
+  var nav = document.getElementById("nav"), btn = document.getElementById("menuBtn");
+  btn.addEventListener("click", function () {
+    var open = nav.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open);
+  });
+  nav.addEventListener("click", function (e) {
+    if (e.target.tagName === "A") { nav.classList.remove("open"); btn.setAttribute("aria-expanded", false); }
+  });
+  var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          links.forEach(function (a) { a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id); });
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    links.forEach(function (a) { var s = document.querySelector(a.getAttribute("href")); if (s) io.observe(s); });
+  }
+})();
+
+/* ===== Challenge flip tiles ===== */
+document.querySelectorAll(".flip").forEach(function (tile) {
+  var front = tile.querySelector(".flip-front"), back = tile.querySelector(".flip-back");
+  function sync() {
+    var on = tile.classList.contains("flipped");
+    tile.setAttribute("aria-pressed", on);
+    // keep links on the hidden side out of keyboard focus
+    if ("inert" in back) { back.inert = !on; front.inert = on; }
+  }
+  var video = tile.querySelector("video");
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (video && still) { video.removeAttribute("autoplay"); video.pause(); }
+  // Some browsers (e.g. Safari in Low Power Mode) refuse to autoplay videos.
+  // In that case swap in the animated image version (same name, .webp), which always plays.
+  if (video && !still) {
+    var p = video.play();
+    if (p && p.catch) p.catch(function () {
+      var img = document.createElement("img");
+      img.src = video.getAttribute("src").replace(/\.mp4$/, ".webp");
+      img.alt = video.getAttribute("aria-label") || "";
+      video.replaceWith(img);
+      video = null;
+    });
+  }
+  function toggle() {
+    tile.classList.toggle("flipped"); sync();
+    // pause the video while its side is hidden
+    if (video && !still) { tile.classList.contains("flipped") ? video.pause() : video.play().catch(function () {}); }
+  }
+  tile.addEventListener("click", function (e) { if (!e.target.closest("a")) toggle(); });
+  tile.addEventListener("keydown", function (e) {
+    if (e.target === tile && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggle(); }
+  });
+  sync();
+});
+
+/* ===== Light / dark toggle ===== */
+document.getElementById("themeBtn").addEventListener("click", function () {
+  var dark = document.documentElement.classList.toggle("dark-scheme");
+  try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
+});
+
+</script>
+
+<!-- ===== Color picker: loaded only with ?colors, uses Google's Material color library ===== -->
+<script type="module">
+if (new URLSearchParams(location.search).has("colors")) {
+  const panel = document.getElementById("picker");
+  const status = document.getElementById("pickerStatus");
+  panel.hidden = false;
+  status.textContent = "Loading color library…";
+  const root = document.documentElement;
+  const baselineLight = root.style.cssText;
+  let lib, last = null;
+  try {
+    lib = await import("https://cdn.jsdelivr.net/npm/@material/material-color-utilities@0.3.0/+esm");
+    status.textContent = "";
+  } catch (e) {
+    status.textContent = "Could not load the color library (are you offline?).";
+  }
+  const ROLES = ["primary","onPrimary","primaryContainer","onPrimaryContainer","secondary","onSecondary",
+    "secondaryContainer","onSecondaryContainer","tertiary","onTertiary","tertiaryContainer","onTertiaryContainer",
+    "error","onError","surface","onSurface","onSurfaceVariant","surfaceContainerLowest","surfaceContainerLow",
+    "surfaceContainer","surfaceContainerHigh","surfaceContainerHighest","outline","outlineVariant",
+    "inverseSurface","inverseOnSurface","inversePrimary"];
+  const kebab = s => s.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+  function scheme(hex, dark) {
+    const variant = document.getElementById("variant").value;
+    const Cls = lib["Scheme" + variant];
+    const s = new Cls(lib.Hct.fromInt(lib.argbFromHex(hex)), dark, 0);
+    const out = {};
+    ROLES.forEach(r => { out[kebab(r)] = lib.hexFromArgb(lib.MaterialDynamicColors[r].getArgb(s)).toUpperCase(); });
+    return out;
+  }
+  // Generated schemes are written to a <style> tag so they override both light and dark blocks.
+  const tag = document.createElement("style");
+  document.head.appendChild(tag);
+  const block = (sel, o) => sel + " {\n" + Object.entries(o).map(([k, v]) => "  --" + k + ": " + v + ";").join("\n") + "\n}";
+  function apply(hex) {
+    if (!lib) return;
+    last = { hex, light: scheme(hex, false), dark: scheme(hex, true) };
+    tag.textContent = block(":root", last.light) + "\n" + block(":root.dark-scheme", last.dark);
+    status.textContent = "Seed " + hex.toUpperCase();
+  }
+  const seed = document.getElementById("seed");
+  seed.addEventListener("input", () => apply(seed.value));
+  document.getElementById("variant").addEventListener("change", () => last && apply(last.hex));
+  const sw = document.getElementById("swatches");
+  ["#6750A4", "#006A6A", "#1B6EF3", "#386A20", "#B3261E", "#8B5000", "#3F5F90", "#7D5260"].forEach(c => {
+    const b = document.createElement("button");
+    b.className = "sw"; b.style.background = c; b.title = c; b.setAttribute("aria-label", "Seed " + c);
+    b.addEventListener("click", () => { seed.value = c; apply(c); });
+    sw.appendChild(b);
+  });
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    tag.textContent = ""; last = null; seed.value = "#6750A4"; status.textContent = "Static baseline scheme";
+  });
+  document.getElementById("copyBtn").addEventListener("click", async () => {
+    if (!last) { status.textContent = "Pick a color first."; return; }
+    const css = "/* Seed " + last.hex.toUpperCase() + " · " + document.getElementById("variant").value + " */\n" +
+      block(":root", last.light) + "\n" + block(":root.dark-scheme", last.dark);
+    try { await navigator.clipboard.writeText(css); status.textContent = "Copied. Paste it over the COLOR SCHEME block."; }
+    catch (e) { status.textContent = "Copy failed; your browser blocked clipboard access."; }
+  });
+}
+</script>
+</body>
+</html>

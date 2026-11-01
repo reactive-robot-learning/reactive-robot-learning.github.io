@@ -1,0 +1,7 @@
+# Only index.html and images/ make up the website. Everything below stays on this computer.
+icra_workshop_proposal.pdf
+profiles/
+assets/
+drafts/
+.claude/
+.DS_Store
