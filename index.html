@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Closing the Loop · ICRA 2027 Workshop</title>
-<meta name="description" content="Closing the Loop: Reactive Execution for Behavior Foundation Models. Full-day workshop at ICRA 2027, May 24–28, COEX, Seoul.">
+<title>Learning to React · ICRA 2027 Workshop Proposal</title>
+<meta name="description" content="Learning to React: Closing the Perception-to-Action Loop for Robot Foundation Models. Proposed full-day workshop at ICRA 2027.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -175,7 +175,6 @@ img { max-width: 100%; display: block; }
   font-size: 0.85rem; font-weight: 500;
 }
 .hero .subtitle { font-size: clamp(1.1rem, 2.2vw, 1.4rem); line-height: 1.4; margin: var(--sp-4) auto 0; max-width: 46ch; opacity: .9; }
-.hero .alt-title { font-size: 0.9rem; margin: var(--sp-3) auto 0; opacity: .75; }
 .hero .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-3); margin-top: var(--sp-8); }
 
 
@@ -285,17 +284,6 @@ section.block + section.block { border-top: 1px solid var(--outline-variant); }
 
 /* CFP */
 .cfp { display: flex; flex-direction: column; gap: var(--gap); }
-.deadline {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4);
-  background: var(--primary); color: var(--on-primary); border-radius: 16px; padding: var(--sp-5) var(--card-pad);
-}
-.deadline p { margin: 0; }
-.deadline-k { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: .85; }
-.deadline-v { font-size: 1.25rem; font-weight: 600; margin-top: var(--sp-1) !important; }
-.deadline .btn { background: var(--surface-container-lowest); color: var(--primary); }
-.deadline .btn:hover { background: var(--primary-container); }
-.btn.is-disabled { cursor: default; opacity: .85; }
-.deadline .tba { margin-left: var(--sp-1); }
 
 .guidelines .title-m { margin-bottom: var(--sp-4); }
 .guide-cols { display: grid; grid-template-columns: repeat(4, 1fr); }
@@ -362,12 +350,12 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
 <!-- ===================== Top app bar ===================== -->
 <header class="appbar">
   <div class="wrap">
-    <a class="brand" href="#top">Closing the Loop <span>· ICRA 2027</span></a>
+    <a class="brand" href="#top">Learning to React <span>· ICRA 2027</span></a>
     <nav class="nav" id="nav" aria-label="Sections">
       <a href="#about">About</a>
       <a href="#speakers">Speakers</a>
       <a href="#program">Program</a>
-      <a href="#cfp">Call for Papers</a>
+      <a href="#cfp">Contributions</a>
       <a href="#challenges">Challenges</a>
       <a href="#organizers">Organizers</a>
     </nav>
@@ -387,17 +375,15 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
   <div class="wrap">
     <div class="hero-card">
       <div class="eyebrow">
-        <span class="pill">ICRA 2027 · Full-day workshop · in person</span>
-        <span class="pill">Seoul, South Korea · COEX</span>
-        <span class="pill">May 24–28, 2027 · day <span class="tba">TBA</span></span>
+        <span class="pill">Workshop proposal · ICRA 2027</span>
+        <span class="pill">Full day · in person</span>
       </div>
-      <h1 class="display">Closing the Loop</h1>
-      <p class="subtitle">Reactive Execution for Behavior Foundation Models</p>
-      <p class="alt-title">Also proposed as <em>Learning to React: Robot Learning in Dynamic Environments</em> · final title <span class="tba">TBA</span></p>
+      <h1 class="display">Learning to React</h1>
+      <p class="subtitle">Closing the Perception-to-Action Loop for Robot Foundation Models</p>
       <div class="actions">
-        <a class="btn filled" href="#cfp">Call for Papers</a>
+        <a class="btn filled" href="#program">Program</a>
         <a class="btn tonal" href="#challenges">Challenges</a>
-        <a class="btn outlined" href="#program">Program</a>
+        <a class="btn outlined" href="#cfp">Contributions</a>
       </div>
     </div>
   </div>
@@ -409,18 +395,15 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
     <div class="section-head">
       <h2 class="headline">Why reactive execution?</h2>
       <p class="body-l">
-        Pre-trained robot foundation models have expanded the range of manipulation tasks robots can perform.
-        Most of these models are used in settings where the environment changes little between observation and
-        action. However, real-world tasks often require robots to respond quickly, while the scene is dynamic.
-        Industrial robots need to maintain high throughput, robots working alongside people need to respond
-        quickly and safely to unexpected changes, and tasks such as striking, catching, and fast contact-rich
-        manipulation require precise timing.
+        Pre-trained robot foundation models have expanded the range of manipulation tasks robots can perform, but
+        are mostly used in settings where the environment changes little between observation and action. Real-world
+        tasks are dynamic: industrial robots need high throughput, robots working alongside people must respond
+        safely to unexpected changes, and catching or striking requires precise timing.
       </p>
       <p class="body-l">
-        To meet these demands, robots must track changes in their surroundings and adjust their actions in time.
-        Yet learned policies (such as vision-language-action, World-Action models) often update their actions
-        much more slowly than sensors provide new information or low-level controllers operate. This delay can
-        leave robots acting on information that is already outdated. This workshop asks:
+        Yet learned policies (such as vision-language-action and World-Action models) often update their actions much
+        more slowly than sensors provide new information or low-level controllers operate, leaving robots acting on
+        outdated information. This workshop asks:
       </p>
       <p class="body-l ask">
         What must change across perception, learning, inference, and execution for robots to
@@ -457,17 +440,19 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
     <!-- Add class="inter" to a row to show the "interactive" badge. -->
     <table class="schedule">
       <tbody>
-        <tr class="inter"><td class="time">08:30–09:00</td><td><span class="what">Opening &amp; live poll</span></td></tr>
-        <tr><td class="time">09:00–10:00</td><td><span class="what">Invited talks 1–2</span></td></tr>
-        <tr class="inter"><td class="time">10:00–11:00</td><td><span class="what">Coffee &amp; poster session I</span></td></tr>
-        <tr class="inter"><td class="time">11:00–12:30</td><td><span class="what">Challenges &amp; top-team sessions</span><span class="detail">Setup and results of both challenges; the top 3–5 teams discuss their design decisions</span></td></tr>
-        <tr class="break"><td class="time">12:30–14:00</td><td><span class="what">Lunch</span></td></tr>
-        <tr><td class="time">14:00–15:00</td><td><span class="what">Invited talks 3–4</span></td></tr>
-        <tr class="inter"><td class="time">15:00–15:30</td><td><span class="what">Spotlights &amp; failure videos</span></td></tr>
-        <tr class="inter"><td class="time">15:30–16:15</td><td><span class="what">Coffee &amp; poster session II</span></td></tr>
-        <tr class="inter"><td class="time">16:15–17:00</td><td><span class="what">Breakout groups</span><span class="detail">Benchmarks &amp; metrics</span></td></tr>
-        <tr class="inter"><td class="time">17:00–17:50</td><td><span class="what">Panel discussion</span><span class="detail">Seeded by the breakout reports and live polls</span></td></tr>
-        <tr><td class="time">17:50–18:00</td><td><span class="what">Closing &amp; awards</span></td></tr>
+        <tr class="inter"><td class="time">08:30–08:50</td><td><span class="what">Opening: Failure Gallery &amp; live poll</span></td></tr>
+        <tr><td class="time">08:50–09:40</td><td><span class="what">Invited talks 1–2</span></td></tr>
+        <tr class="inter"><td class="time">09:40–10:25</td><td><span class="what">Coffee &amp; poster session I</span></td></tr>
+        <tr class="inter"><td class="time">10:25–11:40</td><td><span class="what">Air Hockey Challenge: report &amp; top teams</span></td></tr>
+        <tr><td class="time">11:40–12:30</td><td><span class="what">Invited talks 3–4</span></td></tr>
+        <tr class="break"><td class="time">12:30–14:00</td><td><span class="what">Lunch break</span></td></tr>
+        <tr class="inter"><td class="time">14:00–15:00</td><td><span class="what">DOM Challenge: results &amp; top-5 team panel</span></td></tr>
+        <tr class="inter"><td class="time">15:00–15:45</td><td><span class="what">Coffee &amp; poster session II</span></td></tr>
+        <tr class="inter"><td class="time">15:45–16:00</td><td><span class="what">Breakout setup: join a table, draw cards</span></td></tr>
+        <tr class="inter"><td class="time">16:00–17:00</td><td><span class="what">Breakout game: “Design the 2027 Benchmark”</span></td></tr>
+        <tr class="inter"><td class="time">17:00–17:20</td><td><span class="what">Table pitches &amp; jury feedback</span></td></tr>
+        <tr class="inter"><td class="time">17:20–17:40</td><td><span class="what">Audience vote &amp; intermediate summary</span></td></tr>
+        <tr><td class="time">17:40–18:00</td><td><span class="what">Closing &amp; awards</span></td></tr>
       </tbody>
     </table>
     <p class="note">All times are local time in Seoul (KST, UTC+9).</p>
@@ -478,23 +463,12 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
 <section class="block" id="cfp">
   <div class="wrap">
     <div class="section-head">
-      <h2 class="headline">Call for contributions</h2>
+      <h2 class="headline">Planned call for contributions</h2>
       <p class="body-l">We invite non-archival extended abstracts on reactive robot learning and execution, including
-      datasets, negative results, and position papers. Accepted contributions are presented as posters, and a
-      selection as spotlight talks.</p>
+      datasets, negative results, and position papers. Accepted contributions are presented as posters.</p>
     </div>
 
     <div class="cfp">
-      <!-- Deadline banner: when the OpenReview page exists, replace the <span> button with
-           <a class="btn" href="https://openreview.net/...">Submit on OpenReview</a> -->
-      <div class="deadline">
-        <div>
-          <p class="deadline-k">Submission deadline</p>
-          <p class="deadline-v"><span class="tba">TBA</span></p>
-        </div>
-        <span class="btn is-disabled" aria-disabled="true">Submit on OpenReview <span class="tba">link TBA</span></span>
-      </div>
-
       <div class="card guidelines">
         <h3 class="title-m">Submission guidelines</h3>
         <div class="guide-cols">
@@ -505,8 +479,8 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
           </div>
           <div class="guide">
             <p class="guide-k">Review</p>
-            <p class="guide-v">Double-blind <span class="tba">confirm</span></p>
-            <p class="guide-d">By the organizers and a program committee.</p>
+            <p class="guide-v">Organizers &amp; committee</p>
+            <p class="guide-d">Each submission is reviewed by two organizers and a program committee.</p>
           </div>
           <div class="guide">
             <p class="guide-k">Publication</p>
@@ -515,8 +489,8 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
           </div>
           <div class="guide">
             <p class="guide-k">Presentation</p>
-            <p class="guide-v">Posters &amp; spotlights</p>
-            <p class="guide-d">Up to 30 posters, 8 of them selected as spotlight talks for early-career researchers. <span class="tba">confirm</span></p>
+            <p class="guide-v">Posters</p>
+            <p class="guide-d">Up to 20 posters across two poster sessions.</p>
           </div>
         </div>
       </div>
@@ -534,9 +508,9 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
         </div>
         <div class="card">
           <h3 class="title-m">Failure videos</h3>
-          <p class="muted">We encourage informative failure videos. Please include the system information:
-          sensing rate, inference latency, replanning frequency, and controller rate. Selected videos are discussed
-          in the spotlight and failure-video session.</p>
+          <p class="muted">A separate track accepts short failure videos of robots in dynamic settings. Please include
+          the system information: sensing rate, inference latency, replanning frequency, and controller rate.
+          Selected clips open the day in the Failure Gallery, where the audience diagnoses them in a live poll.</p>
         </div>
       </div>
     </div>
@@ -549,8 +523,8 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
     <div class="section-head">
       <h2 class="headline">Two complementary challenges</h2>
       <p class="body-l">Fast perception and reaction in a competitive task, and adaptation to changing conditions in
-      everyday manipulation with moving objects. At the workshop, each challenge presents its setup and results,
-      followed by a session with the top 3–5 teams on their design decisions, what worked, and what did not.</p>
+      everyday manipulation with moving objects. At the workshop, the Air Hockey organizers report the results
+      together with the top teams, and the top five DOM teams discuss in a panel what worked and what did not.</p>
     </div>
     <!-- Flip tiles: click (or press Enter) to turn a tile over. The front shows a picture,
          the back the description. To give a tile a picture, add <img> inside its .flip-front. -->
@@ -576,7 +550,6 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
             pipelines, end-to-end visuomotor learning, or hybrids.</p>
             <dl class="facts">
               <dt>Organized by</dt><dd>IAS at TU Darmstadt, DFKI SAIROL, and Huawei Technologies R&amp;D (UK)</dd>
-              <dt>Timeline</dt><dd><span class="tba">TBA</span></dd>
             </dl>
             <span class="flip-hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.95 7.95 0 0 0 20 13c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 8.74A7.95 7.95 0 0 0 4 13c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6z"/></svg>Click to flip back</span>
           </article>
@@ -598,14 +571,9 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
             <h3 class="title-l">Dynamic Object Manipulation Challenge</h3>
             <p>Based on a selected subset of the
             <a href="https://arxiv.org/abs/2601.22153">DOM benchmark</a>. Robots grasp and place objects in a scene
-            with <strong>three moving objects</strong>. By varying object motion, friction and other physical properties,
+            with <strong>moving objects</strong>. By varying object motion, friction and other physical properties,
             the challenge tests whether robots adapt their actions as conditions change.</p>
             <p class="muted">Learned policies, perception and control pipelines, and combinations of the two are all welcome.</p>
-            <dl class="facts">
-              <dt>Task subset</dt><dd><span class="tba">TBA</span></dd>
-              <dt>Timeline</dt><dd><span class="tba">TBA</span></dd>
-              <dt>Evaluation</dt><dd><span class="tba">TBA</span></dd>
-            </dl>
             <span class="flip-hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.95 7.95 0 0 0 20 13c0-4.42-3.58-8-8-8zm-6 8c0-1.01.25-1.97.7-2.8L5.24 8.74A7.95 7.95 0 0 0 4 13c0 4.42 3.58 8 8 8v3l4-4-4-4v3c-3.31 0-6-2.69-6-6z"/></svg>Click to flip back</span>
           </article>
         </div>
@@ -647,8 +615,8 @@ footer .wrap { display: flex; flex-direction: column; align-items: center; gap: 
 
 <footer>
   <div class="wrap">
-    <span>Closing the Loop · Workshop at ICRA 2027, Seoul<br>Talks will be recorded and posted here with the accepted abstracts.</span>
-    <span>Contact: <span class="tba">email TBA</span></span>
+    <span>Learning to React · Workshop proposal for ICRA 2027, Seoul</span>
+    <span>If accepted, talks will be recorded and posted here with the accepted abstracts.</span>
   </div>
 </footer>
 
